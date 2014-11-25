@@ -72,7 +72,7 @@ function [model] = exec_ordinal_regression(method, options, Xtrain, ytrain, Xtes
   close all;
   addpath minFunc_2012;
   
-times = zeros(1, 3);count = 1;  
+times = zeros(1, 3);count = 1; tic;
 times(count) = toc; count = count + 1;
   [model, options] = method(Xtrain, ytrain, options);
 

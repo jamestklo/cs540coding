@@ -10,8 +10,8 @@ function [model] = matLearn_regression_NB(X,y,options)
 %   - addBias: adds a bias variable (default: 0)
 %
 % Authors:
-% 	- James Lo (2014), Yan Zhao (2014)
-
+% 	- Scott Sallinen, James Lo, Yan Zhao (2014)
+%
 [nTrain,nFeatures] = size(X);
 
 % generate default model options

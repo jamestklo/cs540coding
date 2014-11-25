@@ -1,6 +1,6 @@
-Yan Zhao
-79098142
-zhaoy27@cs.ubc.ca
+Scott Sallinen
+47778105
+scotts@ece.ubc.ca
 
 CPSC 540 Machine Learning 2014W
 UBC Computer Science
@@ -20,14 +20,13 @@ please see readme_regression_refactoredL2NB.txt
 
 
 C. Setup
-
 The code assumes all the files are inside the folder ./matLearn
 
-1) matLearn_regression_L2.m
-implements the regression_L2 model
+1) matLearn_regression_NB.m
+implements the regression_NB model
 
-2) demo_regression_L2.m
-demo of regression_L2 model
+2) demo_regression_NB.m
+demo of regression_NB model
 
 3)linearRegressionData.mat
 data used in demo

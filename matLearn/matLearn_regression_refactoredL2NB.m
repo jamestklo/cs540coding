@@ -1,13 +1,14 @@
 function [model] = matLearn_regression_refactoredL2NB(X,y,options)
-% matLearn_regression_L2(X,y,options)
+% matLearn_regression_refactoredL2NB(X,y,options)
 %
 % Description:
-%   - Fitting a linear regression model by minimizing the squared loss
+%   - Fitting a linear regression model by minimizing a loss function: L2 or NB
 %
 % Options:
-%   - weights: giving the weight for each training example (default: ones(nTrain,1))
-%   - lambdaL2: strenght of L2-regularization parameter (default: 0)
-%   - addBias: adds a bias variable (default: 0)
+%   - method:	'L2' or 'NB' (default: L2)
+%   - weights:	giving the weight for each training example (default: ones(nTrain,1))
+%   - lambdaL2:	strenght of L2-regularization parameter (default: 0)
+%   - addBias:	adds a bias variable (default: 0)
 %
 % Authors:
 % 	- James Lo (2014), Yan Zhao (2014)
@@ -15,7 +16,7 @@ function [model] = matLearn_regression_refactoredL2NB(X,y,options)
 [nTrain,nFeatures] = size(X);
 
 % generate default model options
-[z,lambdaL2,addBias, method] = myProcessOptions(options,'weights',ones(nTrain,1),'lambdaL2',0,'addBias',0,'method',@squaredLossL2);
+[z,lambdaL2,addBias, method] = myProcessOptions(options,'weights',ones(nTrain,1),'lambdaL2',0,'addBias',0,'method','L2');
 
 % add a bias column to X
 if addBias
@@ -30,10 +31,16 @@ optimOptions.useMex = 0; % Don't use compiled C files
 %optimOptions.derivativeCheck = 1; % Check derivative numerically    
 
 % compute weight vector w using minFunc 
-w = minFunc(@squaredLossNB,randn(nFeatures,1),optimOptions,X,y,lambdaL2,z);
+switch method
+  case 'NB'
+    method = @squaredLossNB;
+  otherwise
+    method = @squaredLossL2;
+end
+w = minFunc(method,randn(nFeatures,1),optimOptions,X,y,lambdaL2,z);
 
 % generate returned variable "model"
-model.name = 'Naive Bayes Squared Loss Linear Regression';
+model.name = 'Refactored NB/L2 Squared Loss Linear Regression';
 model.w = w;
 model.addBias = addBias;
 model.predict = @predict;

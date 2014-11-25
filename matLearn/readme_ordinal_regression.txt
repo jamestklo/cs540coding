@@ -20,10 +20,11 @@ For example c1=-1 < c2=1, would work seamlessly in the current model: please see
 
 
 B. Collaboration
-Compare using different regression models with different datasets on matLearn_ordinal_regression: please see 1st and 3rd demo in Setup:
+Compare using different regression models with different datasets on matLearn_ordinal_regression: please see 1st and 3rd demo in Setup: 
 1) Mark Schmidt's code on matLearn_regression_regressOnOne
 2) Scott Sallinen code on matLearn_regression_NB
 3) Yan Zhao's code on matLearn_regression_L2
+4) Mark Schmidt's code on matLearn_classificaton_exponential - fixed model.addBias bug
 
 Please also see readme_regression_refactoredL2NB.txt
 

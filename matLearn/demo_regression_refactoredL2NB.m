@@ -77,5 +77,5 @@ function [testError]= exec_regression(method, options, Xtrain, ytrain, Xtest, yt
   h3 = plot([0 1],[[1 0]*modelL2.w [1 1]*modelL2.w],liners.L2);
   ylim(yl);
   xlim(xl);
-  legend([h1, h2, h3],{'OnOne', 'NB', 'L2'});
+  legend([h1 h2 h3],{'OnOne', 'NB', 'L2'});
 end

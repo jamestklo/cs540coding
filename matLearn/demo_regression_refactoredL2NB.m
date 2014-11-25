@@ -65,8 +65,9 @@ function [testError]= exec_regression(method, options, Xtrain, ytrain, Xtest, yt
   plot(Xtest,ytest,'b.');
   title(titler);
   hold on
-  plot([0 1],[[1 0]*modelNB.w [1 1]*modelNB.w],liners.NB);
-  plot([0 1],[[1 0]*modelL2.w [1 1]*modelL2.w],liners.L2);
+  h1 = plot([0 1],[[1 0]*modelNB.w [1 1]*modelNB.w],liners.NB);
+  h2 = plot([0 1],[[1 0]*modelL2.w [1 1]*modelL2.w],liners.L2);
   ylim(yl);
   xlim(xl);
+  legend([h1 h2],{'NB', 'L2'});
 end

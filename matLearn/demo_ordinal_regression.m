@@ -1,20 +1,29 @@
 function [] = demo_ordinal_regression()
-  %demo1_ordinal_regression();
-  %demo2_ordinal_regression();
+  demo1_ordinal_regression();
+  demo2_ordinal_regression();
   demo3_ordinal_regression();
 end
 
 function [] = demo1_ordinal_regression
-  % Train regression On One loss model
+  % Train models using data_regressOnOne.mat;
   clear all;
   load data_regressOnOne.mat;
+  
+  options.addBias = 1;	% bias
+  options.lambdaL2 = 1;	% L2-regularization
+  
   options.regression = @matLearn_regression_regressOnOne;
-  options.discrete = @rounding;
+  discrete_ordinal_regression(@matLearn_ordinal_regression, options, Xtrain, ytrain, Xtest, ytest);
+  
+  options.regression = @matLearn_regression_NB;  
+  discrete_ordinal_regression(@matLearn_ordinal_regression, options, Xtrain, ytrain, Xtest, ytest);
+  
+  options.regression = @matLearn_regression_L2;
   discrete_ordinal_regression(@matLearn_ordinal_regression, options, Xtrain, ytrain, Xtest, ytest);
 end
 
 function [] = demo2_ordinal_regression
-  % Train exponential loss model
+  % Train model using on data_exponential.mat;
   clear all;
   load data_exponential.mat;
   options.regression = @matLearn_classification2_exponential;
@@ -24,22 +33,26 @@ function [] = demo2_ordinal_regression
   discrete_ordinal_regression(@matLearn_ordinal_regression, options, Xtrain, ytrain, Xtest, ytest);
 end
 
+
 function [] = demo3_ordinal_regression
-  % Train L2 model
+  % Train models using linearRegressionData.mat
   clear all;
   load linearRegressionData.mat;
   
-  options.addBias = 1;
-  options.lambdaL2 = 1;
-  options.weights = [ones(1, size(X,1) - 100), 0.1*ones(1,100)];
+  options.addBias = 1;	% bias
+  options.lambdaL2 = 1;	% L2-regularization
+  options.weights = [ones(1, size(X,1) - 100), 0.1*ones(1,100)]; 
 
   options.regression = @matLearn_regression_regressOnOne;
   discrete_ordinal_regression(@matLearn_ordinal_regression, options, X, y, Xtest, ytest);
-  
-  options.regression = @matLearn_regression_L2;
+
+  options.regression = @matLearn_regression_NB;
   discrete_ordinal_regression(@matLearn_ordinal_regression, options, X, y, Xtest, ytest);
   
+  options.regression = @matLearn_regression_L2;
+  discrete_ordinal_regression(@matLearn_ordinal_regression, options, X, y, Xtest, ytest);  
 end
+
 
 function [] = discrete_ordinal_regression(method, options, Xtrain, ytrain, Xtest, ytest)
   fprintf('threshold(yhat)\n');

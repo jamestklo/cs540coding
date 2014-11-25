@@ -18,6 +18,12 @@ For example c1=-1 < c2=1, would work seamlessly in the current model: please see
 
 
 B. Collaboration
+Compare using different regression models with different datasets on matLearn_ordinal_regression: please see 1st and 3rd demo in Setup:
+1) Mark Schmidt's code on matLearn_regression_regressOnOne
+2) Scott Sallinen code on matLearn_regression_NB
+3) Yan Zhao's code on matLearn_regression_L2
+
+Please also see readme_regression_refactoredL2NB.txt
 
 
 C. Setup
@@ -27,10 +33,19 @@ The code assumes all the files are inside the folder ./matLearn
 implements the ordinal_regression model
 
 2) demo_ordinal_regression.m - multiple demo's
-1st demo, uses data from data_regressOnOne.mat
-Here, we round the y-values so that there are 11 class labels: from -8 to 2
 
-2nd demo, uses data from data_exponential.mat
+2a) 1st demo, uses data from data_regressOnOne.mat
+Here, the y-values are rounded so that there are 11 class labels: from -8 to 2
+
+2b) 2nd demo, uses data from data_exponential.mat
 Here, the class labels have distance 2, instead of 1 (the normal case).
 
-3rd demo, using Yan Zhao's code on matLearn_regression_L2
+2c) 3rd demo, uses data from load linearRegressionData.mat;
+
+
+3) linearRegressionData.mat
+data used in demo
+
+
+4) ./minFunc_2012
+we need to call functions inside ./minFunc_2012

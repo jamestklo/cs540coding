@@ -152,9 +152,8 @@ function [thresholds, minErrors] = learnThresholds(model, X, y)
 	%if (candidateAt < candidateEnd)
       for t=candidateAt:candidateEnd
 	    candidate = candidates(t);
-	    %err = number of false positives  
-		%    + number of false negatives
-		err  = sum(weights(y >  current).*(yregressed(y >  current) <= candidate))     + sum(weights(y <= current).*(yregressed(y <= current) >  candidate));
+	    %err = (number of false positives) + (number of false negatives)
+		err  = sum(weights(y >  current).*(yregressed(y >  current) <= candidate)) + sum(weights(y <= current).*(yregressed(y <= current) >  candidate));
         if (err < minErr)
           minErr = err;
 		  minAt = t;

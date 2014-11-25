@@ -53,7 +53,7 @@ function [testError]= exec_regression(method, options, Xtrain, ytrain, Xtest, yt
   modelL2 = method(Xtrain,ytrain,options);
   options.method = 'NB';
   modelNB = method(Xtrain,ytrain,options);
-  options.method = 'OnOne';
+  options.method = 1;
   modelO1 = method(Xtrain,ytrain,options);
 
   % compute test error
@@ -64,7 +64,7 @@ function [testError]= exec_regression(method, options, Xtrain, ytrain, Xtest, yt
   yhat = modelO1.predict(modelO1,Xtest);
   testErrorO1 = mean((yhat - ytest).^2);
  
-  fprintf('MSE with %s is:\nOnOne=%3.f NB=%.3f L2=%.3f\n',titler, testErrorO1, testErrorNB, testErrorL2);
+  fprintf('MSE with %s is:\n OnOne=%.3f NB=%.3f L2=%.3f\n',titler, testErrorO1, testErrorNB, testErrorL2);
 
   % visualization
   figure(fig);
@@ -77,6 +77,5 @@ function [testError]= exec_regression(method, options, Xtrain, ytrain, Xtest, yt
   h3 = plot([0 1],[[1 0]*modelL2.w [1 1]*modelL2.w],liners.L2);
   ylim(yl);
   xlim(xl);
-  legend([h1 h2],{'OnOne', 'NB', 'L2'});
+  legend([h1, h2, h3],{'OnOne', 'NB', 'L2'});
 end
-

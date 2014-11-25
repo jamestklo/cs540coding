@@ -28,9 +28,10 @@ B. Collaboration
 refactoring: refactored the following into matLearn_regression_refactoredL2NB.m
 1) matLearn_regression_NB.m 
 2) matLearn_regression_L2.m
+3) matLearn_regression_regressOnOne.m
 
 comparison: compared the above in demo_regression_refactoredL2NB.m
-
+2) and 3) are identical in the plot because the training data has only 1 feature.
 
 C. Setup
 

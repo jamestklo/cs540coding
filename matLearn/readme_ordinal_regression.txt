@@ -33,3 +33,4 @@ Here, we round the y-values so that there are 11 class labels: from -8 to 2
 2nd demo, uses data from data_exponential.mat
 Here, the class labels have distance 2, instead of 1 (the normal case).
 
+3rd demo, using Yan Zhao's code on matLearn_regression_L2

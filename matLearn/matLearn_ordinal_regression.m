@@ -7,6 +7,7 @@ function [model, options] = matLearn_ordinal_regression(X, y, options)
 %
 %% Options:
 %
+% # weights:	giving a weight to each training sample
 % # regression:	regression method
 % # discrete:	function to turn regressed values into discrete values
 % # thresholds:	thresholds for decision stumps; thresholds(c-1) < y(i) <= thresholds(c) implies y(i) = classes(c)
@@ -33,9 +34,8 @@ function [model, options] = matLearn_ordinal_regression(X, y, options)
   rmfield(options, 'regression');
   model.regressed = regression(X, y, options);
 
-  model.weights = options.weights;
   if model.thresholds == false
-    [model.thresholds, minErrors] = learnThresholds(model, X, y);
+    [model.thresholds, minErrors] = learnThresholds(model, X, y, options);
 	[model.classes, [model.thresholds;Inf], [minErrors;Inf]];
   end
   model.predict = @predict; 
@@ -52,15 +52,15 @@ function [filled] = getDefaultOptions(X, y, options)
   end
   if isfield(filled, 'classes') == 0
     if isfield(filled, 'nClasses') && (filled.nClasses > 0)
-	  minY = min(y);
-	  maxY = max(y);
+	  minY = round(min(y));
+	  maxY = round(max(y));
       filled.classes = minY:(maxY-minY)/(filled.nClasses-1):maxY;
 	  rmfield(filled, 'nClasses');
       if isfield(filled, 'discrete') == 0
         filled.discrete = @discreteHash;
       end
 	else
-	  filled.classes = sort(unique(y));
+	  filled.classes = sort(unique(round(y)));
     end
   end
   if isfield(filled, 'discrete') == 0
@@ -130,14 +130,17 @@ function [yhat_i] = discreteHash(model, yhat_i)
   end
 end
 
-function [thresholds, minErrors] = learnThresholds(model, X, y)
+function [thresholds, minErrors] = learnThresholds(model, X, y, options)
   classes = model.classes;
   nThresholds = length(classes) -1;
   thresholds = classes(1:nThresholds, 1);
   minErrors = zeros(nThresholds, 1);
 
-  weights = model.weights;
-  
+  weights = options.weights;
+  [wRows, wCols] = size(weights);
+  if wRows == 1
+    weights = transpose(weights);
+  end
   regressed = model.regressed;
   [nTrain, nFeatures] = size(X);
   yregressed = regressed.predict(regressed, X);
@@ -162,7 +165,7 @@ function [thresholds, minErrors] = learnThresholds(model, X, y)
 	  minErrors(c) = minErr;
 	  thresholds(c) = candidates(minAt);
 	  candidateAt = minAt + 1;
-    %end	
+    %end
   end
   model.thresholds = thresholds;
   
@@ -172,7 +175,8 @@ function [thresholds, minErrors] = learnThresholds(model, X, y)
     rdiscrete(i) = model.discrete(model, yregressed(i));
 	ydiscrete(i) = model.discrete(model, y(i));
   end
-  [yregressed, rdiscrete, y, ydiscrete];
+  trainResults = [yregressed, rdiscrete, y, ydiscrete];
+  fprintf('Train error (squared)  with %s %s is: %.3f\n', model.name, model.regressed.name, mean((yregressed - y).^2));
   fprintf('Train error (absolute) with %s %s is: %.3f\n', model.name, model.regressed.name, mean(abs(yregressed-y)));
   fprintf('Train error (accuracy) with %s %s is: %.3f\n', model.name, model.regressed.name, mean(rdiscrete~=ydiscrete));
 end

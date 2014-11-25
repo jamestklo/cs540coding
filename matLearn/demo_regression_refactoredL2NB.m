@@ -1,4 +1,4 @@
-function [] = demo_regression_NB()
+function [] = demo_regression_refactoredL2NB()
 clear all
 close all
 

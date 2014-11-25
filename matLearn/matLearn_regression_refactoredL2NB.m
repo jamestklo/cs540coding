@@ -1,8 +1,8 @@
-function [model] = matLearn_regression_NB(X,y,options)
-% matLearn_regression_NB(X,y,options)
+function [model] = matLearn_regression_refactoredL2NB(X,y,options)
+% matLearn_regression_L2(X,y,options)
 %
 % Description:
-%   - Fitting a linear regression model by minimizing the Naive Bayes squared loss
+%   - Fitting a linear regression model by minimizing the squared loss
 %
 % Options:
 %   - weights: giving the weight for each training example (default: ones(nTrain,1))
@@ -15,7 +15,7 @@ function [model] = matLearn_regression_NB(X,y,options)
 [nTrain,nFeatures] = size(X);
 
 % generate default model options
-[z,lambdaL2,addBias] = myProcessOptions(options,'weights',ones(nTrain,1),'lambdaL2',0,'addBias',0);
+[z,lambdaL2,addBias, method] = myProcessOptions(options,'weights',ones(nTrain,1),'lambdaL2',0,'addBias',0,'method',@squaredLossL2);
 
 % add a bias column to X
 if addBias
@@ -47,6 +47,12 @@ function [yhat] = predict(model,Xhat)
     end
     w = model.w;
     yhat = Xhat*w;
+end
+
+% squared loss function with training sample weights and L2 regularization
+function [f,g] = squaredLossL2(w,X,y,lambda,z)
+    f = (X*w-y)'*diag(z)*(X*w-y) + lambda*(w'*w);
+    g = 2*X'*diag(z)*(X*w-y) + 2*lambda*w;
 end
 
 % Naive Bayes squared loss function with training sample weights and L2 regularization

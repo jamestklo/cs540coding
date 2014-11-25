@@ -26,10 +26,11 @@ function [] = demo2_ordinal_regression
   % Train model using on data_exponential.mat;
   clear all;
   load data_exponential.mat;
-  options.regression = @matLearn_classification2_exponential;
-  options.discrete = @rounding;
-  options.addBias = 1;	
+
+  options.addBias = 1;
   options.lambdaL2 = 1;
+
+  options.regression = @matLearn_classification2_exponential;
   discrete_ordinal_regression(@matLearn_ordinal_regression, options, Xtrain, ytrain, Xtest, ytest);
 end
 

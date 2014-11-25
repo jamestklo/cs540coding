@@ -15,9 +15,13 @@ function [model,options] = matLearn_classification2_exponential(X,y,options)
 
 [addBias,lambdaL2] = myProcessOptions(options,'addBias',0,'lambdaL2',0);
 
+model.name = 'Exponential Loss';
+model.predict = @predict;
+
 if addBias
    X = [ones(nTrain,1) X];
    nFeatures = nFeatures + 1;
+   model.addBias = 1;
 end
 
 optimOptions.Display = 0; % Turn off display of optimization progress
@@ -30,15 +34,12 @@ else
     w = minFunc(@exponentialLossL2,randn(nFeatures,1),optimOptions,X,y,lambdaL2);
 end
 
-model.name = 'Exponential Loss';
-model.addBias = 1;
 model.w = w;
-model.predict = @predict;
 end
 
 function [yhat] = predict(model,Xhat)
 [nTest,nFeatures] = size(Xhat);
-if model.addBias
+if isfield(model, 'addBias') && model.addBias == 1
     Xhat = [ones(nTest,1) Xhat];
 end
 w = model.w;

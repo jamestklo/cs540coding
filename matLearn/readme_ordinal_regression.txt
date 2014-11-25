@@ -16,6 +16,8 @@ In addition to the traditional {1, 2, 3, ..., C} class labels, the current imple
 The only requirement is that the class labels remain ordinal e.g. c1 < c2 < c3 < ... < cK.
 For example c1=-1 < c2=1, would work seamlessly in the current model: please see demo2_ordinal_regression for details.
 
+3) addBias: add a bias column to design matrix
+
 
 B. Collaboration
 Compare using different regression models with different datasets on matLearn_ordinal_regression: please see 1st and 3rd demo in Setup:

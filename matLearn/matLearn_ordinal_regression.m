@@ -7,8 +7,9 @@ function [model, options] = matLearn_ordinal_regression(X, y, options)
 %
 %% Options:
 %
-% # weights:	giving a weight to each training sample
-% # regression:	regression method
+% # weights:	giving a weight to each training sample (default: all one's)
+% # addBias:	adds a bias variable (default: 0)
+% # regression:	regression method (default: matLearn_regression_L2);
 % # discrete:	function to turn regressed values into discrete values
 % # thresholds:	thresholds for decision stumps; thresholds(c-1) < y(i) <= thresholds(c) implies y(i) = classes(c)
 % # classes: 	discrete class labels, classes(c-1) must be less than classes(c)
@@ -20,6 +21,14 @@ function [model, options] = matLearn_ordinal_regression(X, y, options)
   model.name = 'Ordinal Regression';
   options = getDefaultOptions(X, y, options);
 
+  if options.addBias
+    X = [ones(length(y),1) X];
+	options.addBias = 0;
+	model.addBias = 1;
+  else
+    model.addBias = 0;
+  end
+  
   % clean up options for regression
   model.thresholds	= options.thresholds;
   rmfield(options, 'thresholds');
@@ -44,6 +53,9 @@ end
 function [filled] = getDefaultOptions(X, y, options)
   filled = options;
   % define default options
+  if isfield(filled, 'addBias') ==0
+    filed.addBias = 0;
+  end
   if isfield(filled, 'regression') == 0 || isa(@filled.regression, 'function_handle') == 0
     filled.regression = @fitlm;
   end
@@ -72,6 +84,11 @@ function [filled] = getDefaultOptions(X, y, options)
 end
 
 function [ydiscrete, yhat] = predict(model, Xhat)
+  if isfield(model, 'addBias') && model.addBias == 1
+    Xhat = [ones(size(Xhat,1),1) Xhat];
+	model.addBias = 0;
+	isBiasAdded = 1;
+  end
   regressed = model.regressed;
   yhat = regressed.predict(regressed, Xhat);
   ydiscrete = yhat;
@@ -79,6 +96,9 @@ function [ydiscrete, yhat] = predict(model, Xhat)
   nTest = length(yhat);
   for i=1:nTest
 	ydiscrete(i) = discrete(model, yhat(i));
+  end
+  if isBiasAdded
+    model.addBias = 1;
   end
 end
 
@@ -163,7 +183,7 @@ function [thresholds, minErrors] = learnThresholds(model, X, y, options)
 	    end
 	  end
 	  minErrors(c) = minErr;
-	  thresholds(c) = candidates(minAt);
+	  thresholds(c) = candidates(min(minAt, nCandidates));
 	  candidateAt = minAt + 1;
     %end
   end

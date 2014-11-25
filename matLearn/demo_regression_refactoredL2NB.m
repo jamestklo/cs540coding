@@ -1,4 +1,4 @@
-function [] = demo_regression_NB()
+function [] = demo_regression_refactoredL2NB()
 clear all
 close all
 
@@ -71,9 +71,12 @@ function [testError]= exec_regression(method, options, Xtrain, ytrain, Xtest, yt
   plot(Xtest,ytest,'b.');
   title(titler);
   hold on
-  plot([0 1],[[1 0]*modelNB.w [1 1]*modelNB.w],liners.O1);
-  plot([0 1],[[1 0]*modelNB.w [1 1]*modelNB.w],liners.NB);
-  plot([0 1],[[1 0]*modelL2.w [1 1]*modelL2.w],liners.L2);
+
+  h1 = plot([0 1],[[1 0]*modelO1.w [1 1]*modelO1.w],liners.O1);
+  h2 = plot([0 1],[[1 0]*modelNB.w [1 1]*modelNB.w],liners.NB);
+  h3 = plot([0 1],[[1 0]*modelL2.w [1 1]*modelL2.w],liners.L2);
   ylim(yl);
   xlim(xl);
+  legend([h1 h2],{'OnOne', 'NB', 'L2'});
 end
+

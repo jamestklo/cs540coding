@@ -33,6 +33,9 @@ refactoring: refactored the following into matLearn_regression_refactoredL2NB.m
 comparison: compared the above in demo_regression_refactoredL2NB.m
 2) and 3) are identical in the plot because the training data has only 1 feature.
 
+standardization: standardized coding style across the different files
+
+
 C. Setup
 
 The code assumes all the files are inside the folder ./matLearn
